@@ -1,10 +1,24 @@
 from time import sleep
-from comunication.DataSender import DataSender
+from comunication import DataSender
+import socket
+
+
+def listen_for_ip(port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.bind(("", port))
+    while True:
+        data, addr = s.recvfrom(1024)
+        if data.startswith(b"SERVER_IP:"):
+            server_ip = data.split(b":")[1].decode()
+            return server_ip
 
 
 def main():
+    print("Waiting for server IP")
+    server_ip = listen_for_ip(37020)
+    print("Server IP found: ", server_ip)
     # Create a DataSender object
-    sender = DataSender("http://localhost:50000/data", 1)
+    sender = DataSender(f"http://{server_ip}:50123/data", 1)
 
     # Send some data
     while True:

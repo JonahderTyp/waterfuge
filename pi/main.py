@@ -1,4 +1,4 @@
-from comunication.DataSender import DataSender
+from comunication import DataSender
 from flowmeter import FlowMeter
 from rpmmeter import RpmMeter
 from smoother import Smoother

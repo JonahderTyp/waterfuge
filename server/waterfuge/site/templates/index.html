@@ -5,16 +5,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Data Plot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
 
 <body>
-    <h1>Real-Time RPM and Flow Data</h1>
-    <canvas id="myChart" width="400" height="200"></canvas>
+    <div class="container mt-5">
+        <h1 class="text-center">Real-Time RPM and Flow Data</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-header">
+                        RPM
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="rpmValue">0</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-header">
+                        Flow
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="flowValue">0</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-header">
+                        Chart RPM
+                    </div>
+                    <div class="card-body">
+                        <canvas id="rpmChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-header">
+                        Chart Flow
+                    </div>
+                    <div class="card-body">
+                        <canvas id="flowChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
+        var rpmCtx = document.getElementById('rpmChart').getContext('2d');
+        var flowCtx = document.getElementById('flowChart').getContext('2d');
+
+        var rpmChart = new Chart(rpmCtx, {
             type: 'line',
             data: {
                 labels: [],
@@ -22,32 +71,33 @@
                     label: 'RPM',
                     borderColor: 'rgb(255, 99, 132)',
                     data: [],
-                    fill: false
-                },
-                {
-                    label: 'Flow',
-                    borderColor: 'rgb(54, 162, 235)',
-                    data: [],
-                    fill: false
                 }]
             },
             options: {
                 scales: {
                     x: {
-                        type: 'time',
-                        time: {
-                            unit: 'second'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Time'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Value'
-                        }
+                        type: 'linear',
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        var flowChart = new Chart(flowCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Flow',
+                    borderColor: 'rgb(54, 162, 235)',
+                    data: [],
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
                     }
                 }
             }
@@ -56,11 +106,20 @@
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
         socket.on('new_data', function (msg) {
-            var time = new Date();
-            chart.data.labels.push(time);
-            chart.data.datasets[0].data.push({ x: time, y: msg.rpm });
-            chart.data.datasets[1].data.push({ x: time, y: msg.flow });
-            chart.update();
+            var time = new Date().toLocaleTimeString();
+
+            // Update charts
+            rpmChart.data.labels.push(time);
+            rpmChart.data.datasets[0].data.push(msg.rpm);
+            rpmChart.update();
+
+            flowChart.data.labels.push(time);
+            flowChart.data.datasets[0].data.push(msg.flow);
+            flowChart.update();
+
+            // Update cards
+            document.getElementById('rpmValue').textContent = msg.rpm;
+            document.getElementById('flowValue').textContent = msg.flow;
         });
     </script>
 </body>
