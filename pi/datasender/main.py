@@ -1,5 +1,3 @@
-import json
-import socket
 from time import sleep
 
 from comunication import DataSender
@@ -7,7 +5,6 @@ from configobj import ConfigObj
 from flowmeter import FlowMeter
 from listen import get_server_ip
 from rpmmeter import RpmMeter
-from smoother import Smoother
 
 
 def main():
