@@ -1,5 +1,6 @@
-import requests
 from time import sleep
+
+import requests
 
 
 class ConectionError(Exception):
@@ -7,17 +8,15 @@ class ConectionError(Exception):
 
 
 class DataSender():
-    def __init__(self, url, id):
+    def __init__(self, url):
         self.url = url
-        self.id = id
 
     def sendMesurment(self, rpm, flow):
         trys = 5
         for try_ in range(trys):
             print(
-                f"Sending data to {self.url} with id {self.id}\trpm: {rpm}\tflow: {flow}")
+                f"Sending data to {self.url} \trpm: {rpm}\tflow: {flow}")
             data = {
-                "id": self.id,
                 "rpm": rpm,
                 "flow": flow
             }
