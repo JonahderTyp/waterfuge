@@ -8,8 +8,7 @@ from .listen import get_server_ip
 from .rpmmeter import RpmMeter
 
 
-def main():
-    config = ConfigObj("config.cfg")
+def main(config: ConfigObj):
 
     # Create a FlowMeter object
     flow_meter = FlowMeter(

@@ -1,5 +1,7 @@
 import argparse
 
+from configobj import ConfigObj
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Send data to a server")
     parser.add_argument("--config", type=str,
@@ -10,13 +12,14 @@ if __name__ == "__main__":
                         help="Test the connection to the server")
     args = vars(parser.parse_args())
     print(args)
+    config = ConfigObj(args['config'])
     try:
         if args['test']:
             from .test import test
-            test()
+            test(config)
         else:
             from .main import main
-            main()
+            main(config)
     except KeyboardInterrupt:
         print("Exiting...")
         exit(0)
