@@ -1,18 +1,20 @@
 from time import sleep
 
-from comunication import DataSender
 from configobj import ConfigObj
 
+from .comunication import DataSender
 from .listen import get_server_ip
 
 
-def main():
+def test():
     print("Testing")
     config = ConfigObj("config.cfg")
 
+    server_ip = get_server_ip().get('ip', '0.0.0.0')
+
     # Create a DataSender object
     data_sender = DataSender(
-        f"http://{get_server_ip().get('ip', '0.0.0.0')}:8080/upload/{config.get('system_id')}/")
+        f"http://{server_ip}:8080/upload/{config.get('system_id')}/")
 
     # Send some data
     while True:
@@ -29,4 +31,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    test()

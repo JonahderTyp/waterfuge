@@ -10,9 +10,13 @@ if __name__ == "__main__":
                         help="Test the connection to the server")
     args = vars(parser.parse_args())
     print(args)
-    if args['test']:
-        from testData import main
-        main()
-    else:
-        from main import main
-        main()
+    try:
+        if args['test']:
+            from .test import test
+            test()
+        else:
+            from .main import main
+            main()
+    except KeyboardInterrupt:
+        print("Exiting...")
+        exit(0)
