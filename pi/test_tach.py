@@ -9,4 +9,5 @@ try:
         print(rpm_meter.get_rpm())
         sleep(1)
 finally:
+    print("\ncleaning up...\n")
     cleanup()
