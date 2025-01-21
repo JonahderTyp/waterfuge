@@ -27,7 +27,14 @@ def run(serverurl):
         rpm = rpm_meter.get_rpm()
 
         # Send the flow rate to the server
-        data_sender.sendMesurment(rpm, flow_rate)
+        try:
+            data_sender.sendMesurment(rpm, flow_rate)
+        except:
+            # Conection Failed, Some LED status sometime here
+            pass
+        else:
+            # Conection Successfull, Some LED status sometime here
+            pass
 
         # Wait for 1 second
         sleep(1)
