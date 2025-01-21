@@ -33,7 +33,6 @@ class RpmMeter:
         diff = current_time - self.lastTrigger
         self.lastTrigger = current_time
         self.timestamps.append((current_time, diff))
-        print("PULSE")
         
 
     def get_rpm(self):
@@ -56,7 +55,6 @@ class RpmMeter:
             rps = (length/self.pulses_per_rotation)/self.smoothing_window
             
         rpm = rps*60
-        print(f"rpm {rpm}")
 
         return rpm
 
