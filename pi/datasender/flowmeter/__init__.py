@@ -1,5 +1,7 @@
 import time
+
 import RPi.GPIO as GPIO
+
 from ..rpmmeter import RpmMeter
 
 

@@ -1,10 +1,8 @@
 import time
-import RPi.GPIO as GPIO
 from collections import deque
 
-import time
 import RPi.GPIO as GPIO
-from collections import deque
+
 
 class RpmMeter:
     lastTrigger = time.time()
@@ -33,7 +31,6 @@ class RpmMeter:
         diff = current_time - self.lastTrigger
         self.lastTrigger = current_time
         self.timestamps.append((current_time, diff))
-        
 
     def get_rpm(self):
         """
@@ -48,12 +45,12 @@ class RpmMeter:
         # Remove timestamps older than the smoothing window
         while self.timestamps and self.timestamps[0][0] < current_time - self.smoothing_window:
             self.timestamps.pop(0)
-            
+
         length = len(self.timestamps)
         rps = 0
         if length > 0:
             rps = (length/self.pulses_per_rotation)/self.smoothing_window
-            
+
         rpm = rps*60
 
         return rpm

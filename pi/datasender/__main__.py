@@ -1,8 +1,9 @@
 import argparse
+
 from configobj import ConfigObj
-from RPi.GPIO import cleanup, setwarnings
-from datasender.testData import test
 from datasender.run import run
+from datasender.testData import test
+from RPi.GPIO import cleanup, setwarnings
 
 if __name__ == "__main__":
     print("Hello from Datasender")
@@ -15,7 +16,7 @@ if __name__ == "__main__":
                         help="Test the connection to the server")
     args = vars(parser.parse_args())
     config = ConfigObj("config.cfg")
-    
+
     setwarnings(True)
     try:
         if args['test']:
