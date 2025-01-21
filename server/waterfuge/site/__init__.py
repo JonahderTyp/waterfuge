@@ -13,7 +13,7 @@ site = Blueprint('site', __name__, template_folder='templates',
                  static_folder='static')
 
 
-@site.route("/api/ingest/<int:id>", methods=["POST"])
+@site.route("/api/ingess/<int:id>", methods=["POST"])
 def ingest_data(id):
     sensor = Sensor.get_via_id(id)
     data = request.json
