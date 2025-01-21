@@ -19,7 +19,7 @@ chmod +x start.sh
 
 # Setup crontab for running the script at reboot
 echo "Adding start script to crontab for reboot..."
-(crontab -l 2>/dev/null; echo "@reboot /path/to/start_script.sh") | crontab -
+(crontab -l 2>/dev/null; echo "@reboot /home/summer/waterfuge/pi/start.sh") | crontab -
 
 # Final message
 echo "Setup completed successfully!"
