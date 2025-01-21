@@ -1,8 +1,11 @@
 import argparse
-
 from configobj import ConfigObj
+from RPi.GPIO import cleanup, setwarnings
+from datasender.testData import test
+from datasender.run import run
 
 if __name__ == "__main__":
+    print("Hello from Datasender")
     parser = argparse.ArgumentParser(description="Send data to a server")
     parser.add_argument("--config", type=str,
                         help="Path to the config file", default="config.cfg")
@@ -11,15 +14,14 @@ if __name__ == "__main__":
     parser.add_argument("-test", action="store_true",
                         help="Test the connection to the server")
     args = vars(parser.parse_args())
-    print(args)
-    config = ConfigObj(args['config'])
+    config = ConfigObj("config.cfg")
+    
+    setwarnings(True)
     try:
         if args['test']:
-            from .test import test
-            test(config)
+            test(config.get("serverurl"))
         else:
-            from .main import main
-            main(config)
-    except KeyboardInterrupt:
-        print("Exiting...")
-        exit(0)
+            run(config.get("serverurl"))
+    finally:
+        print("\ncleaning up...\n")
+        cleanup()
