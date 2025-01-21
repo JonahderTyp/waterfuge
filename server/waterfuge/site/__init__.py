@@ -1,6 +1,9 @@
+import random
 import time
 
 from flask import Blueprint, abort, jsonify, render_template, request
+
+from ..database.db import Sensor
 
 # from flask_socketio import emit
 
@@ -8,6 +11,32 @@ from flask import Blueprint, abort, jsonify, render_template, request
 
 site = Blueprint('site', __name__, template_folder='templates',
                  static_folder='static')
+
+
+@site.route("/api/ingest/<int:id>", methods=["POST"])
+def ingest_data(id):
+    sensor = Sensor.get_via_id(id)
+    data = request.json
+
+    if 'flow' not in data or 'rpm' not in data:
+        abort(400)
+
+    sensor.update_values(data['flow'], data['rpm'])
+    return ('', 204)
+
+
+@site.route("/api/sensor/<int:id>")
+def get_sensor_data(id):
+    sensor = Sensor.get_via_id(id)
+    return jsonify(sensor.to_dict())
+
+
+@site.route("/api/sensors")
+def get_sensors_data():
+    sensors = Sensor.get_all()
+    data = [sensor.to_dict() for sensor in sensors]
+    return jsonify(data)
+
 
 # Dictionary to store the data received from each server
 data_store = {
@@ -50,8 +79,6 @@ def receive_data(client_id):
 def display_data(client_id):
     global data_store
 
-    LAST_N_ENTRIES = 10
-
     current_time = time.time()
     thirty_seconds_ago = current_time - 30
 
@@ -64,10 +91,14 @@ def display_data(client_id):
     recent_values = [
         entry for entry in client_data if thirty_seconds_ago <= entry['timestamp'] <= current_time
     ]
-
     return jsonify(recent_values), 200
 
 
 @site.route('/')
 def index():
     return render_template('index.html')
+
+
+@site.route('/overview')
+def test():
+    return render_template('overview.html')

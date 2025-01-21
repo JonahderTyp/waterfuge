@@ -64,7 +64,8 @@ function fetchData() {
                     const latestData = data[data.length - 1];
 
                     // Update the current value display
-                    document.getElementById(`${clientId}-current`).textContent = `Aktuelle Drehzahl: ${latestData.rpm}, Aktueller Durchfluss: ${latestData.flow}`;
+                    document.getElementById(`${clientId}-current-rpm`).textContent = `${Number(latestData.rpm).toFixed(0)} u/min`;
+                    document.getElementById(`${clientId}-current-flow`).textContent = `${Number(latestData.flow).toFixed(0)} l/min`;
 
                     // Update the Plotly chart with new data
                     updatePlotlyChart(clientId, timestamps, rpmData, flowData);

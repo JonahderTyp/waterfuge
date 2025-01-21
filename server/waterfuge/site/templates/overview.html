@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% from "teamcard.html" import teamcard %}
+
+{% block content %}
+
+<div class="container-flex py-4 mx-3">
+    <h1 class="text-center mb-4">Waterfuge Project Dashboard</h1>
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            {{ teamcard("1") }}
+        </div>
+
+        <div class="col-md-6">
+            {{ teamcard("2") }}
+        </div>
+        <div class="col-md-6">
+            {{ teamcard("3") }}
+        </div>
+        <div class="col-md-6">
+            {{ teamcard("4") }}
+        </div>
+    </div>
+</div>
+<script>
+    let charts = {};
+    const maxDataPoints = 60; // Store data for the last 60 seconds
+
+    async function fetchSensorsData() {
+        const response = await fetch('/api/sensors');
+        return await response.json();
+    }
+
+    function createChart(ctx) {
+        return new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: `Flow`,
+                        data: [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        yAxisID: 'y1',
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 0,
+                    },
+                    {
+                        label: `RPM`,
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        yAxisID: 'y2',
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 0,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Time' },
+                    },
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        title: { display: true, text: 'Flow' },
+                        suggestedMin: 0,
+                        suggestedMax: 200,
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        title: { display: true, text: 'RPM' },
+                        suggestedMin: 0,
+                        suggestedMax: 200,
+                        grid: {
+                            drawOnChartArea: false, // Only draw grid lines for the left Y-axis
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function updateTextValues(id, name, flowValue, rpmValue, online) {
+        const nameElements = document.querySelectorAll(`.card-${id}-name`);
+        nameElements.forEach(el => {
+            el.textContent = name;
+        });
+
+        const flowElements = document.querySelectorAll(`.card-${id}-flow`);
+        flowElements.forEach(el => {
+            el.textContent = flowValue;
+        });
+
+        const rpmElements = document.querySelectorAll(`.card-${id}-rpm`);
+        rpmElements.forEach(el => {
+            el.textContent = rpmValue;
+        });
+
+        // Handle overlay visibility and message
+        const overlay = document.getElementById(`card-${id}-offline-overlay`);
+        if (online) {
+            overlay.classList.add('d-none'); // Hide the overlay
+        } else {
+            overlay.classList.remove('d-none'); // Show the overlay
+        }
+    }
+
+
+
+    function updateChart(chart, flowValue, rpmValue) {
+        const currentTime = new Date().toLocaleTimeString();
+
+        // Add new data points
+        chart.data.labels.push(currentTime);
+        chart.data.datasets[0].data.push(flowValue);
+        chart.data.datasets[1].data.push(rpmValue);
+
+        chart.update();
+
+        // Remove the oldest data point to maintain a scrolling effect
+        if (chart.data.labels.length > maxDataPoints) {
+            chart.data.labels.shift(); // Remove the oldest label
+            chart.data.datasets[0].data.shift(); // Remove the oldest flow value
+            chart.data.datasets[1].data.shift(); // Remove the oldest rpm value
+        }
+
+        chart.update();
+    }
+
+    async function pollAndUpdateCharts() {
+        while (true) {
+            const sensorsData = await fetchSensorsData();
+            sensorsData.forEach(sensor => {
+                const graph = `ID-${sensor.id}`;
+                if (charts[graph]) {
+                    updateChart(charts[graph], sensor.flow, sensor.rpm);
+                    updateTextValues(sensor.id, sensor.name, sensor.flow, sensor.rpm, sensor.online);
+                }
+            });
+
+            // Wait 1 second before the next update
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
+
+    async function setupCharts() {
+        charts['ID-1'] = createChart(document.getElementById('card-1-chart').getContext('2d'));
+        charts['ID-2'] = createChart(document.getElementById('card-2-chart').getContext('2d'));
+        charts['ID-3'] = createChart(document.getElementById('card-3-chart').getContext('2d'));
+        charts['ID-4'] = createChart(document.getElementById('card-4-chart').getContext('2d'));
+
+        // Start polling and updating charts
+        pollAndUpdateCharts();
+    }
+
+    setupCharts();
+</script>
+{% endblock %}

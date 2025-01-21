@@ -1,0 +1,34 @@
+{% macro teamcard(team_id) %}
+<div class="card shadow-sm position-relative">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-6 d-flex justify-content-start">
+                <h5 class="card-title text-center">
+                    <span class="card-{{ team_id }}-name">
+                        Kein Sensor Regestriert
+                    </span>
+                </h5>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <div class="m-0 p-0">
+                    <p>RPM: <span class="card-{{ team_id }}-rpm"></span></p>
+                </div>
+                <div class="m-0 p-0">
+                    <p>Flow: <span class="card-{{ team_id }}-flow"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="position-relative" style="height: 300px;">
+            <canvas id="card-{{ team_id }}-chart"></canvas>
+            <!-- Translucent overlay for offline status -->
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-none bg-dark bg-opacity-75 text-white d-flex justify-content-center align-items-center"
+                id="card-{{ team_id }}-offline-overlay" style="z-index: 5;">
+                <h5 class="m-0"><span class="card-{{ team_id }}-name"></span> is offline</h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

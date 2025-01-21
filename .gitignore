@@ -62,7 +62,8 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+instance/*
+!instance/.gitignore
 .webassets-cache
 
 # Scrapy stuff:
@@ -161,6 +162,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-.venv
+
+# waterfuge
 *.cfg
 !config.example.cfg
