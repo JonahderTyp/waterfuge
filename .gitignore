@@ -162,4 +162,5 @@ cython_debug/
 #.idea/
 
 .venv
-config.cfg
+*.cfg
+!config.example.cfg
