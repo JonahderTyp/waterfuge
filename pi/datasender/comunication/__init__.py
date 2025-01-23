@@ -28,8 +28,9 @@ class DataSender():
                 return
             except (ConnectTimeout, ConnectionError) as ex:
                 error = True
+                errormsg = str(ex).replace('\n', ' \\n')
                 print(
-                    f"Error sending data to server. Try {try_+1}/{trys} {ex}")
+                    f"Error sending data to server. Try {try_+1}/{trys} {errormsg}")
                 sleep(1)
                 if try_ >= trys-1:
                     raise ConnectionError("Error sending data to server")
