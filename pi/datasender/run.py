@@ -10,7 +10,7 @@ def run(serverurl):
     # Create a FlowMeter object
     print("Setting up Flow Meter...", end="")
     flow_meter = FlowMeter(
-        pin=17, liter_per_roataion=450, pulses_per_rotation=1)
+        pin=26, liter_per_roataion=0.00225, pulses_per_rotation=1)
     print("Done")
 
     print("Setting up RPM Meter...", end="")
@@ -25,6 +25,8 @@ def run(serverurl):
         flow_rate = flow_meter.get_flow()
 
         rpm = rpm_meter.get_rpm()
+
+        print(f"rpm:{rpm} \t flow:{flow_rate}")
 
         # Send the flow rate to the server
         try:

@@ -12,4 +12,4 @@ class FlowMeter:
             pin=pin, pulses_per_rotation=pulses_per_rotation)
 
     def get_flow(self):
-        return self.rpm_meter.get_rpm() / self.liter_per_roataion
+        return self.rpm_meter.get_rpm() * self.liter_per_roataion
