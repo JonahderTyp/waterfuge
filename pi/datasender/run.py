@@ -1,6 +1,6 @@
 from time import sleep
 
-from datasender.comunication import DataSender
+from datasender.comunication import ConnectionError, DataSender
 from datasender.flowmeter import FlowMeter
 from datasender.rpmmeter import RpmMeter
 
@@ -31,8 +31,9 @@ def run(serverurl):
         # Send the flow rate to the server
         try:
             data_sender.sendMesurment(rpm, flow_rate)
-        except:
+        except ConnectionError:
             # Conection Failed, Some LED status sometime here
+            print("CONNECTION FAILED")
             pass
         else:
             # Conection Successfull, Some LED status sometime here
