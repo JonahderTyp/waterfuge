@@ -22,7 +22,7 @@ def run(serverurl):
 
     while True:
         # Get the current flow rate
-        flow_rate = flow_meter.get_flow()
+        flow_rate = flow_meter.get_flow()*60
 
         rpm = rpm_meter.get_rpm()
 
