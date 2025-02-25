@@ -1,7 +1,7 @@
 from time import sleep
 
 import requests
-from requests import ConnectionError, ConnectTimeout
+from requests import ConnectionError, ConnectTimeout, ReadTimeout
 
 
 class DataSender():
@@ -26,7 +26,7 @@ class DataSender():
                 if error:
                     print(f"Request successfull after {try_+1} atempts")
                 return
-            except (ConnectTimeout, ConnectionError) as ex:
+            except (ConnectTimeout, ConnectionError, ReadTimeout) as ex:  # ReadTimeoutError
                 error = True
                 errormsg = str(ex).replace('\n', ' \\n')
                 print(
