@@ -7,7 +7,7 @@ echo "Setting up your environment..."
 
 # Update package lists and install tmux
 echo "Installing tmux..."
-sudo apt-get update && sudo apt-get install tmux -y
+sudo apt-get update && sudo apt-get install tmux -y && sudo apt-get install python3-rpi.gpio -y
 
 # Remove existing virtual environment if it exists
 if [ -d ".venv" ]; then
