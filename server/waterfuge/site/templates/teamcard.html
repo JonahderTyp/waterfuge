@@ -24,8 +24,12 @@
         <div class="position-relative" style="height: 300px;">
             <canvas id="card-{{ team_id }}-chart"></canvas>
             <!-- Translucent overlay for offline status -->
-            <div class="position-absolute top-0 start-0 w-100 h-100 d-none bg-dark bg-opacity-75 text-white d-flex justify-content-center align-items-center"
-                id="card-{{ team_id }}-offline-overlay" style="z-index: 5;">
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-none d-flex justify-content-center align-items-center
+                {% if dark %}
+                bg-dark bg-opacity-75 text-white
+                {% else %}
+                bg-light bg-opacity-75 text-dark
+                {% endif %}" id="card-{{ team_id }}-offline-overlay" style="z-index: 5;">
                 <h5 class="m-0"><span class="card-{{ team_id }}-name"></span> is offline</h5>
             </div>
         </div>

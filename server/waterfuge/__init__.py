@@ -49,7 +49,9 @@ def create_app():
             app.logger.info("All tables are empty. Seeding database...")
             seed_database()
 
+    from .api import api_site
     from .site import site
     app.register_blueprint(site)
+    app.register_blueprint(api_site)
 
     return app

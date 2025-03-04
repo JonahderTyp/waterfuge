@@ -12,30 +12,13 @@ from ..database.db import Sensor
 site = Blueprint('site', __name__, template_folder='templates',
                  static_folder='static')
 
-
-@site.route("/api/ingess/<int:id>", methods=["POST"])
-def ingest_data(id):
-    sensor = Sensor.get_via_id(id)
-    data = request.json
-
-    if 'flow' not in data or 'rpm' not in data:
-        abort(400)
-
-    sensor.update_values(data['flow'], data['rpm'])
-    return ('', 204)
+# Set the dark variable based on url param ?dark=true
 
 
-@site.route("/api/sensor/<int:id>")
-def get_sensor_data(id):
-    sensor = Sensor.get_via_id(id)
-    return jsonify(sensor.to_dict())
-
-
-@site.route("/api/sensors")
-def get_sensors_data():
-    sensors = Sensor.get_all()
-    data = [sensor.to_dict() for sensor in sensors]
-    return jsonify(data)
+@site.context_processor
+def inject_dark():
+    dark = request.args.get('dark', "False").lower() in ["true", "1"]
+    return dict(dark=dark)
 
 
 @site.route('/')
@@ -44,5 +27,5 @@ def index():
 
 
 @site.route('/overview')
-def test():
+def overview():
     return render_template('overview.html')
