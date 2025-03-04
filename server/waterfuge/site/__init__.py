@@ -1,18 +1,9 @@
-import random
-import time
-
-from flask import Blueprint, abort, jsonify, render_template, request
+from flask import Blueprint, redirect, render_template, request, url_for
 
 from ..database.db import Sensor
 
-# from flask_socketio import emit
-
-# from .. import socketio
-
 site = Blueprint('site', __name__, template_folder='templates',
                  static_folder='static')
-
-# Set the dark variable based on url param ?dark=true
 
 
 @site.context_processor
@@ -21,11 +12,20 @@ def inject_dark():
     return dict(dark=dark)
 
 
-@site.route('/')
+@site.route('/', methods=['GET', 'POST'])
 def index():
+
+    if request.method == 'POST':
+        try:
+            s = Sensor.get_via_id(int(request.form['id']))
+            s.set_name(request.form['name'])
+        except Exception as e:
+            pass
+        return redirect(url_for('.index'))
+
     return render_template('index.html')
 
 
-@site.route('/overview')
+@site.get('/overview')
 def overview():
     return render_template('overview.html')

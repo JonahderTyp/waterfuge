@@ -2,11 +2,44 @@
 
 {% block content %}
 
-<h1>
-    <a href="{{ url_for('site.overview')}}">light</a>
-</h1>
-<h1>
-    <a href="{{ url_for('site.overview', dark=True)}}">Dark</a>
-</h1>
+
+<div class="card">
+    <div class="card-header">
+        Overview
+    </div>
+    <div class="card-body">
+        <form action="{{ url_for('site.overview')}}" method="get">
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" name="dark" value="True"
+                    id="flexSwitchCheckDefault" checked>
+                <label class="form-check-label" for="flexSwitchCheckDefault">Darkmode</label>
+            </div>
+
+            <br>
+            <label class="form-label"> Name </label>
+            <input class="form-control" type="text" name="name" value="Waterfuge Project Default">
+            <br>
+            <input class="btn btn-primary" type="submit" value="GO">
+        </form>
+    </div>
+</div>
+<hr>
+<div class="card">
+    <div class="card-header">
+        Set Team Name
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <label class="form-label"> ID </label>
+            <input class="form-control" type="number" name="id" value="{{ id }}">
+            <br>
+            <label class="form-label"> Name </label>
+            <input class="form-control" type="text" name="name" value="{{ name }}">
+            <br>
+            <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+    </div>
+</div>
 
 {% endblock %}

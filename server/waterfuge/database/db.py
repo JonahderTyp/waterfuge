@@ -59,6 +59,10 @@ class Sensor(BaseTable):
         self.last_online = datetime.now()
         db.session.commit()
 
+    def set_name(self, name: str):
+        self.name = name
+        db.session.commit()
+
     def to_dict(self):
         return {
             "id": self.id,

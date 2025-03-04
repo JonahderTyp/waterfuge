@@ -11,7 +11,7 @@
 {% block content %}
 
 <div class="container-flex py-4 mx-3">
-    <h1 class="text-center mb-4">Waterfuge Project Dashboard</h1>
+    <h1 class="text-center mb-4">{{request.args.get('name', 'Waterfuge Project Dashboard')}}</h1>
     <div class="row g-4">
 
         <div class="col-md-6">
