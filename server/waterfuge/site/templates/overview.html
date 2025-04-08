@@ -8,16 +8,14 @@
 
 {% from "teamcard.html" import teamcard with context %}
 
-{% block content %}
+{% block content_override %}
 
-<div class="container-flex py-4 mx-3">
-    <h1 class="text-center mb-4">{{request.args.get('name', 'Waterfuge Project Dashboard')}}</h1>
+<div class="container-flex py-0 my-0 mx-3">
+    <h1 class="text-center mb-4 mt-0">{{request.args.get('name', 'Waterfuge Project Dashboard')}}</h1>
     <div class="row g-4">
-
         <div class="col-md-6">
             {{ teamcard("1") }}
         </div>
-
         <div class="col-md-6">
             {{ teamcard("2") }}
         </div>
@@ -31,7 +29,7 @@
 </div>
 <script>
     let charts = {};
-    const maxDataPoints = 60; // Store data for the last 60 seconds
+    const maxDataPoints = parseInt("{{request.args.get('time', '60')}}"); // Store data for the last 60 seconds
 
     async function fetchSensorsData() {
         const response = await fetch('/api/sensors');
@@ -69,7 +67,7 @@
                 maintainAspectRatio: false,
                 scales: {
                     x: {
-                        title: { display: true, text: 'Time' },
+                        title: { display: false, text: 'Time' },
                     },
                     y1: {
                         type: 'linear',

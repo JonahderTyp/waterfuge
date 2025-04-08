@@ -3,18 +3,18 @@
     <div class="card-header">
         <div class="row">
             <div class="col-md-6 d-flex justify-content-start">
-                <h5 class="card-title text-center">
+                <p class="card-title text-center fs-1">
                     <span class="card-{{ team_id }}-name">
                         Kein Sensor Regestriert
                     </span>
-                </h5>
+                </p>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
                 <div class="m-0 p-0">
-                    <p>RPM: <span class="card-{{ team_id }}-rpm"></span></p>
+                    <p class="fs-1">RPM: <span class="card-{{ team_id }}-rpm"></span></p>
                 </div>
                 <div class="m-0 p-0">
-                    <p>Flow: <span class="card-{{ team_id }}-flow"></span></p>
+                    <p class="fs-1">Flow: <span class="card-{{ team_id }}-flow"></span></p>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                 {% else %}
                 bg-light bg-opacity-75 text-dark
                 {% endif %}" id="card-{{ team_id }}-offline-overlay" style="z-index: 5;">
-                <h5 class="m-0"><span class="card-{{ team_id }}-name"></span> is offline</h5>
+                <h5 class="m-0"><span class="card-{{ team_id }}-name"></span> ist offline</h5>
             </div>
         </div>
     </div>
