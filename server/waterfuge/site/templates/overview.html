@@ -65,6 +65,15 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: {
+                    y: {
+                        duration: 0 // Disable y-axis animation
+                    },
+                    x: {
+                        duration: 100, // or whatever feels good
+                        easing: 'linear'
+                    }
+                },
                 scales: {
                     x: {
                         title: { display: false, text: 'Time' },
