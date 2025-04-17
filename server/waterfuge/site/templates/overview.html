@@ -23,7 +23,9 @@
             {{ teamcard("3") }}
         </div>
         <div class="col-md-6">
-            {{ teamcard("4") }}
+            <div class="d-none">
+                {{ teamcard("4") }}
+            </div>
         </div>
     </div>
 </div>
@@ -100,7 +102,7 @@
         });
     }
 
-    function updateTextValues(id, name, flowValue, rpmValue, online) {
+    function updateTextValues(id, name, flowValue, rpmValue, online, rpmmax, flowmax) {
         const nameElements = document.querySelectorAll(`.card-${id}-name`);
         nameElements.forEach(el => {
             el.textContent = name;
@@ -114,6 +116,16 @@
         const rpmElements = document.querySelectorAll(`.card-${id}-rpm`);
         rpmElements.forEach(el => {
             el.textContent = rpmValue;
+        });
+
+        const rpmMaxElements = document.querySelectorAll(`.card-${id}-rpmmax`);
+        rpmMaxElements.forEach(el => {
+            el.textContent = rpmmax;
+        });
+
+        const flowMaxElements = document.querySelectorAll(`.card-${id}-flowmax`);
+        flowMaxElements.forEach(el => {
+            el.textContent = flowmax;
         });
 
         // Handle overlay visibility and message
@@ -144,6 +156,8 @@
             chart.data.datasets[1].data.shift(); // Remove the oldest rpm value
         }
 
+        return chart.data
+
         chart.update();
     }
 
@@ -153,8 +167,12 @@
             sensorsData.forEach(sensor => {
                 const graph = `ID-${sensor.id}`;
                 if (charts[graph]) {
-                    updateChart(charts[graph], sensor.flow, sensor.rpm);
-                    updateTextValues(sensor.id, sensor.name, sensor.flow, sensor.rpm, sensor.online);
+                    data = updateChart(charts[graph], sensor.flow, sensor.rpm);
+
+                    const rpmMax = Math.max(...data.datasets[1].data);
+                    const flowMax = Math.max(...data.datasets[0].data);
+
+                    updateTextValues(sensor.id, sensor.name, sensor.flow, sensor.rpm, sensor.online, rpmMax, flowMax);
                 }
             });
 
