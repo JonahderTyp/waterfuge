@@ -1,24 +1,28 @@
 {% macro teamcard(team_id) %}
 <div class="card shadow-sm position-relative">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-6 d-flex justify-content-start">
-                <p class="card-title text-center fs-1">
-                    <span class="card-{{ team_id }}-name">
-                        Kein Sensor Regestriert
-                    </span>
-                </p>
-            </div>
-            <div class="col-md-6 d-flex justify-content-between">
-                <div class="m-0 p-0">
-                    <p class="fs-1">RPM: <span class="card-{{ team_id }}-rpm"></span> (<span
-                            class="card-{{ team_id }}-rpmmax"></span>)</p>
-                </div>
-                <div class="m-0 p-0">
-                    <p class="fs-1">Flow: <span class="card-{{ team_id }}-flow"></span> (<span
-                            class="card-{{ team_id }}-flowmax"></span>)</p>
-                </div>
-            </div>
+    <div class="card-header
+            d-flex
+            align-items-center
+            justify-content-between
+            flex-column flex-md-row">
+        <div>
+            <p class="card-title fs-1 mb-0 text-center">
+                <span class="card-{{ team_id }}-name">
+                    Kein Sensor Regestriert
+                </span>
+            </p>
+        </div>
+        <div>
+            <p class="fs-1 mb-0">
+                RPM: <span class="card-{{ team_id }}-rpm"></span>
+                (<span class="card-{{ team_id }}-rpmmax"></span>)
+            </p>
+        </div>
+        <div>
+            <p class="fs-1 mb-0">
+                Flow: <span class="card-{{ team_id }}-flow"></span>
+                (<span class="card-{{ team_id }}-flowmax"></span>)
+            </p>
         </div>
     </div>
 
